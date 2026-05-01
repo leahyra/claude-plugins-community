@@ -905,7 +905,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/HMAKT99/AKF.git",
-        "sha": "2715fd7ddea3856c464babb2fe4b6d589049d844"
+        "sha": "071eb1d6fa5b7b5287e84d5854cc6d3ec719f3d7"
       },
       "homepage": "https://akf.dev"
     },
@@ -1503,7 +1503,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/andonimichael/arxitect.git",
-        "sha": "16dde0dc06368c4768b2e327be5986957c577e21"
+        "sha": "473c4867e9be818033f654bacf82615bc8eed694"
       },
       "homepage": "https://github.com/andonimichael/arxitect"
     },
@@ -2308,7 +2308,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/noemuch/bridge.git",
-        "sha": "b183b15d87468c0f348206a4a7a77d2dc760f4f4"
+        "sha": "436edc83f3eab749f596f34d532bf781b1a6524e"
       },
       "homepage": "https://github.com/noemuch/bridge"
     },
@@ -3638,7 +3638,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/amu815/claude-handoff.git",
-        "sha": "0ea804bb59abe53cbd52d59fdfab433e06a22917"
+        "sha": "e75e62bfa1f84df24a5d39bd7dbb7bda0e8efdd5"
       },
       "homepage": "https://github.com/amu815/claude-handoff"
     },
@@ -3828,7 +3828,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/kennethleungty/claude-music.git",
-        "sha": "535f2a496dc4d383577d4d9fcb4d1e7c09ba30cb"
+        "sha": "321ac937de83df0435816a57da146964ab149c73"
       },
       "homepage": "https://github.com/kennethleungty/claude-music"
     },
@@ -4589,7 +4589,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/kennethleungty/code-music.git",
-        "sha": "535f2a496dc4d383577d4d9fcb4d1e7c09ba30cb"
+        "sha": "321ac937de83df0435816a57da146964ab149c73"
       },
       "homepage": "https://github.com/kennethleungty/code-music"
     },
@@ -5289,7 +5289,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/corememapp/claude-plugin.git",
-        "sha": "5f68a7773a4e6350debe080daf24961400ef057b"
+        "sha": "8a0074f43f6790c0c576fcb7bc49af2559ba1c47"
       },
       "homepage": "https://coremem.app/"
     },
@@ -6672,7 +6672,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/ornelasEduardo/doom.git",
-        "sha": "5190865749d3e17d404325e29f54282eb7ec5023"
+        "sha": "7fadea8d62c0e0eb4f246c197962373f2139f286"
       },
       "homepage": "https://www.doom.design/"
     },
@@ -7524,7 +7524,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/robukh/figma-suite.git",
-        "sha": "56199d561b136f43655f86758a5a9f35eef1ee32"
+        "sha": "57077499a24c673a2c6c393830a10a984cd0b33e"
       },
       "homepage": "https://github.com/robukh/figma-suite"
     },
@@ -8605,7 +8605,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/daanielcruz/gsearch-mcp.git",
-        "sha": "8943293664467b8855af234c1ed62ecf40f6d304"
+        "sha": "5721abd1850585eb4c3111275524584a0eb93de0"
       },
       "homepage": "https://github.com/daanielcruz/gsearch-mcp"
     },
@@ -8645,7 +8645,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/orieg/gws-connector.git",
-        "sha": "9e2b7052b7315ab23590d97063e85a85352025ba"
+        "sha": "0d1cffe3384bcdca2fa3386ca067eabbd7f216b0"
       },
       "homepage": "https://orieg.github.io/gws-connector/"
     },
@@ -12125,7 +12125,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/Benknightdark/neo-skills.git",
-        "sha": "77752d19feb26a19626e3ac2a5c4df628ba9576b"
+        "sha": "5ee75dd70225e045d35c56d8aa532a722c719875"
       },
       "homepage": "https://github.com/Benknightdark/neo-skills"
     },
@@ -15649,7 +15649,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/lucianostraga/sfagent-tools.git",
-        "sha": "8d75f901558524469b10b32579815ce833480483"
+        "sha": "097f5f88f3d40436eb531ea607c3782308402356"
       },
       "homepage": "https://github.com/lucianostraga/sfagent-tools"
     },
@@ -16509,7 +16509,7 @@
         "url": "fjpulidop/specrails-core",
         "path": "specrails-plugin",
         "ref": "main",
-        "sha": "b2a4968c0011f631d480f32e7897d2fdeff3e66d"
+        "sha": "99be70d110e86c2b020983fc739d7ec7d748ef34"
       },
       "homepage": "https://specrails.dev/"
     },
@@ -17288,7 +17288,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/HUA-Labs/tap.git",
-        "sha": "5c4c6995fa736d6a4549bee16b2d3a84a46da1e0"
+        "sha": "1c258e31e52e427085433307d03d6198cd83c460"
       },
       "homepage": "https://www.npmjs.com/package/@hua-labs/tap"
     },
@@ -18041,7 +18041,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/lu-zhengda/tsm.git",
-        "sha": "dd59c3c11596a8ef7bc108158851c4ea9ca594da"
+        "sha": "4005ffa0237383f9238d3789461ad6b84571a9db"
       },
       "homepage": "https://github.com/lu-zhengda/tsm"
     },
@@ -18143,7 +18143,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/mlobo2012/UK-SMB-Finance-Accounting-Plugin.git",
-        "sha": "16fd92aa9922709af0b1059b601c799da5ae93fe"
+        "sha": "60f4b462d45b8f920ed738536471722020cd70c4"
       },
       "homepage": "https://www.ai-heroes.co/en-gb/free-tools/finance-accounting-claude-cowork-plugin"
     },
@@ -18153,7 +18153,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/mlobo2012/UK-SMB-Legal-Plugin.git",
-        "sha": "d9cdd1f43bb9392dd1ab4e4522a93418c2f92e76"
+        "sha": "ff14a33f313488a8bc9dccd48706398ae05515ba"
       },
       "homepage": "https://www.ai-heroes.co/en-gb/free-tools/legal-claude-cowork-plugin"
     },
@@ -18633,7 +18633,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/nicobailon/visual-explainer.git",
-        "sha": "9a97a5818bebbcb61cccf8941d533b82a1ce958b"
+        "sha": "8f1d0e38ab0f265632a31d2fd032f7b730c98c15"
       },
       "homepage": "https://github.com/nicobailon/visual-explainer"
     },
@@ -18643,7 +18643,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/nicobailon/visual-explainer.git",
-        "sha": "9a97a5818bebbcb61cccf8941d533b82a1ce958b"
+        "sha": "8f1d0e38ab0f265632a31d2fd032f7b730c98c15"
       },
       "homepage": "https://github.com/nicobailon/visual-explainer"
     },
