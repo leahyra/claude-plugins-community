@@ -52,6 +52,8 @@ sorted="$(jq -r '[.plugins[].name | ascii_downcase] | . == (.|sort)' -- "$MP")"
 dups="$(jq -r '[.plugins[].name] | group_by(.) | map(select(length>1) | .[0]) | .[]' -- "$MP")"
 [[ -z "$dups" ]] || flag "I2" "duplicate plugin names: $(tr '\n' ' ' <<<"$dups")"
 
+# U+200B ZWSP, U+200C ZWNJ, U+200D ZWJ, U+200E LRM, U+200F RLM,
+# U+202A-202E bidi embedding/override, U+2066-2069 bidi isolates, U+FEFF BOM
 HIDDEN_UNI=$'​‌‍‎‏‪‫‬‭‮⁦⁧⁨⁩﻿'
 
 # I3/I10/I11 — per-entry name/description checks

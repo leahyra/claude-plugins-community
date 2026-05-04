@@ -57,6 +57,7 @@ while IFS= read -r entry; do
   [[ -n "$ok" ]] || { skip "$name" "host '$host' not in allowlist"; continue; }
   [[ -z "$subdir" ]] || { has_unsafe_chars "$subdir" && { skip "$name" "unsafe subdir"; continue; }; }
 
+  # || true masks SIGPIPE from head -1; the regex below catches partial reads.
   new_sha="$(git ls-remote -- "$full_url" HEAD 2>/dev/null | awk '{print $1}' | head -1 || true)"
   if [[ ! "$new_sha" =~ ^[0-9a-f]{40}$ ]]; then
     skip "$name" "ls-remote failed or returned no HEAD"; continue

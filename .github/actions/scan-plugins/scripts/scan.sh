@@ -123,6 +123,9 @@ while IFS= read -r ext; do
              --json-schema "$schema" \
            2>&1 || true)"
 
+  # Only `passes` is gated here; --json-schema makes the other required fields
+  # present-or-retry at the model layer, so jq -r on them yields strings (or
+  # the literal "null" on rare malformed output) rather than crashing.
   verdict="$(jq -c '.result // empty' <<<"$raw" 2>/dev/null || true)"
   if [[ -z "$verdict" ]] || ! jq -e 'has("passes")' <<<"$verdict" >/dev/null 2>&1; then
     printf '::warning %s::scan-plugins: %s — could not parse verdict; raw output in step log\n' "$loc" "$name"
