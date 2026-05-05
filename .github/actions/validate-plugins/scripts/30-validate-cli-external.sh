@@ -70,26 +70,27 @@ while IFS= read -r ext; do
   assert_safe_sha "$sha"
   [[ -z "$subdir" ]] || assert_safe_path "$subdir"
 
+  ref="$url@${sha:0:8}${subdir:+ ($subdir)}"
   dest="$workroot/ext-$idx"
   mkdir -p -- "$dest"
 
   if ! timeout "$TIMEOUT_SECS" git clone --quiet --depth 1 -- "$url" "$dest" 2>&1; then
-    error "$name: git clone failed or timed out"
-    record_result "cli-external" "fail" "$name" "git clone failed"
+    error "$name: git clone failed or timed out — $ref"
+    record_result "cli-external" "fail" "$name" "git clone failed — $ref"
     failures=$((failures+1))
     continue
   fi
 
   if ! git -C "$dest" fetch --quiet --depth 1 origin -- "$sha" 2>&1; then
-    error "$name: git fetch $sha failed"
-    record_result "cli-external" "fail" "$name" "git fetch of pinned sha failed"
+    error "$name: git fetch of pinned sha failed — $ref"
+    record_result "cli-external" "fail" "$name" "git fetch of pinned sha failed — $ref"
     failures=$((failures+1))
     continue
   fi
 
   if ! git -C "$dest" -c advice.detachedHead=false checkout --quiet "$sha" -- 2>&1; then
-    error "$name: git checkout $sha failed"
-    record_result "cli-external" "fail" "$name" "git checkout of pinned sha failed"
+    error "$name: git checkout of pinned sha failed — $ref"
+    record_result "cli-external" "fail" "$name" "git checkout of pinned sha failed — $ref"
     failures=$((failures+1))
     continue
   fi
@@ -98,25 +99,31 @@ while IFS= read -r ext; do
   if [[ -n "$subdir" ]]; then
     target="$dest/$subdir"
     if [[ ! -d "$target" ]]; then
-      error "$name: subdir '$subdir' not found in repo"
-      record_result "cli-external" "fail" "$name" "subdir not found"
+      error "$name: subdir '$subdir' not found — $ref"
+      record_result "cli-external" "fail" "$name" "subdir '$subdir' not found — $ref"
       failures=$((failures+1))
       continue
     fi
   fi
 
-  if [[ ! -f "$target/.claude-plugin/plugin.json" ]]; then
-    error "$name: no .claude-plugin/plugin.json at $target"
-    record_result "cli-external" "fail" "$name" "missing .claude-plugin/plugin.json"
-    failures=$((failures+1))
-    continue
+  manifest="$target/.claude-plugin/plugin.json"
+  if [[ ! -f "$manifest" ]]; then
+    if [[ -f "$target/plugin.json" ]]; then
+      manifest="$target/plugin.json"
+    else
+      error "$name: no plugin manifest (.claude-plugin/plugin.json or plugin.json) — $ref"
+      record_result "cli-external" "fail" "$name" "no plugin manifest — $ref"
+      failures=$((failures+1))
+      continue
+    fi
   fi
 
-  if out="$(timeout "$TIMEOUT_SECS" claude plugin validate "$target/.claude-plugin/plugin.json" 2>&1)"; then
-    log "  ✓ $name OK"
+  if out="$(timeout "$TIMEOUT_SECS" claude plugin validate "$manifest" 2>&1)"; then
+    log "  ✓ $name OK — $ref"
     record_result "cli-external" "pass" "$name" ""
   else
-    error "$name: claude plugin validate failed"
+    detail="$(grep -E '❯|Error:' <<<"$out" | head -1 | sed -E 's/^[[:space:]]+//')"
+    error "$name: claude plugin validate failed — $ref — ${detail:-see log}"
     log "$out"
     record_result "cli-external" "fail" "$name" "$out"
     failures=$((failures+1))

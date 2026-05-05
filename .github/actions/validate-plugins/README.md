@@ -27,7 +27,7 @@ canonical schema. These do not track upstream — they are this org's policy flo
 |---|---|---|
 | **11 invariants** | full marketplace | I1–I9 hardening rules (sort, dups, desc bounds, https-only, SHA-pin required, filename match, no-direct-edit, vendored-path-exists, no shell metacharacters) |
 | **20 cli-marketplace** | full marketplace | `claude plugin validate <marketplace.json>` — the canonical schema check |
-| **30 cli-external** | changed entries (or all, if `validate-all-external`) | clone each external plugin at its pinned SHA, run `claude plugin validate` |
+| **30 cli-external** | changed entries (or all, if `validate-all-external`) | clone each external plugin at its pinned SHA, run `claude plugin validate`. Exactly as strict as the CLI — extra keys in `plugin.json` fail. |
 | **40 cli-local** | changed folders | `claude plugin validate` on each in-repo plugin folder the PR touched |
 | **41 aux-files** | changed folders | JSON-parse `.mcp.json` / `.lsp.json` / `hooks/hooks.json` (runtime always-probes these; malformed = crash) |
 

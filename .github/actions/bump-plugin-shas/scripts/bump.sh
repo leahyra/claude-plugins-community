@@ -82,11 +82,13 @@ while IFS= read -r entry; do
 
   target="$dest${subdir:+/$subdir}"
   manifest="$target/.claude-plugin/plugin.json"
+  [[ -f "$manifest" ]] || manifest="$target/plugin.json"
   if [[ ! -f "$manifest" ]]; then
-    skip "$name" "no .claude-plugin/plugin.json at new sha"; rm -rf -- "$dest"; continue
+    skip "$name" "no plugin manifest at $full_url@${new_sha:0:8}"; rm -rf -- "$dest"; continue
   fi
   if ! out="$(timeout 120 claude plugin validate "$manifest" 2>&1)"; then
-    skip "$name" "validation failed at new sha: $(head -1 <<<"$out")"
+    detail="$(grep -E '❯|Error:' <<<"$out" | head -1 | sed -E 's/^[[:space:]]+//')"
+    skip "$name" "validation failed at $full_url@${new_sha:0:8}: ${detail:-$(head -1 <<<"$out")}"
     rm -rf -- "$dest"; continue
   fi
   rm -rf -- "$dest"
