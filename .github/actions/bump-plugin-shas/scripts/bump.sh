@@ -139,12 +139,57 @@ fi
 
 group_start "Open PR"
 
-git config user.name  "github-actions[bot]"
-git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-git checkout -B "$PR_BRANCH"
-git add -- "$MARKETPLACE_PATH"
-git commit -m "Bump $applied plugin SHA pin(s) to upstream HEAD"
-git push --force-with-lease origin "$PR_BRANCH"
+# Commit via GitHub's GraphQL `createCommitOnBranch` mutation rather than a
+# local `git commit` + push. Commits created server-side are signed by GitHub's
+# web-flow GPG key and show as "Verified" — required when the base branch
+# enforces `required_signatures` (e.g. via an org-level ruleset). A local
+# commit in CI has no signing key and would be unmergeable.
+#
+# This also avoids importing any signing key material onto the runner: there
+# is nothing to leak, rotate, or revoke. The token already in scope is the
+# only credential involved, and `expectedHeadOid` gives compare-and-swap
+# semantics so a concurrent push fails loudly instead of being clobbered
+# (the workflow's `concurrency` group already serializes runs; this is
+# belt-and-suspenders).
+
+base_sha="$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/heads/${BASE_BRANCH}" --jq '.object.sha')"
+[[ "$base_sha" =~ ^[0-9a-f]{40}$ ]] || die "could not resolve $BASE_BRANCH HEAD"
+
+# Point the PR branch at base HEAD: create if absent, force-reset if present.
+# Force-reset is intentional — each run produces one fresh commit on top of
+# base, replacing a stale unmerged bump rather than stacking on it (matches
+# the previous `git checkout -B` + force-push semantics).
+if ! gh api -X POST "repos/${GITHUB_REPOSITORY}/git/refs" \
+       -f ref="refs/heads/${PR_BRANCH}" -f sha="$base_sha" >/dev/null 2>&1; then
+  gh api -X PATCH "repos/${GITHUB_REPOSITORY}/git/refs/heads/${PR_BRANCH}" \
+    -f sha="$base_sha" -F force=true >/dev/null \
+    || die "could not create or reset $PR_BRANCH"
+fi
+
+commit_msg="Bump $applied plugin SHA pin(s) to upstream HEAD"
+
+# Build the request body with jq and pipe it: the base64-encoded marketplace
+# can exceed Linux's per-argument limit (MAX_ARG_STRLEN, 128 KiB), so the file
+# content must travel via stdin rather than `gh api -f/-F`.
+new_oid="$(
+  jq -n \
+    --rawfile content "$MARKETPLACE_PATH" \
+    --arg repo   "$GITHUB_REPOSITORY" \
+    --arg branch "$PR_BRANCH" \
+    --arg oid    "$base_sha" \
+    --arg msg    "$commit_msg" \
+    --arg path   "$MARKETPLACE_PATH" \
+    '{
+      query: "mutation($repo:String!,$branch:String!,$oid:GitObjectID!,$msg:String!,$path:String!,$contents:Base64String!){createCommitOnBranch(input:{branch:{repositoryNameWithOwner:$repo,branchName:$branch},message:{headline:$msg},fileChanges:{additions:[{path:$path,contents:$contents}]},expectedHeadOid:$oid}){commit{oid}}}",
+      variables: {
+        repo: $repo, branch: $branch, oid: $oid, msg: $msg,
+        path: $path, contents: ($content | @base64)
+      }
+    }' \
+  | gh api graphql --input - --jq '.data.createCommitOnBranch.commit.oid'
+)" || die "createCommitOnBranch failed"
+[[ "$new_oid" =~ ^[0-9a-f]{40}$ ]] || die "createCommitOnBranch did not return a commit OID (got: $new_oid)"
+log "Created signed commit $new_oid on $PR_BRANCH"
 
 body="$workroot/pr-body.md"
 {

@@ -3,9 +3,12 @@ description: >
   Discover external marketplace entries whose upstream HEAD has moved past the
   pinned SHA, validate each at the new SHA with `claude plugin validate`, and
   open a single PR with all passing bumps. Bot-free: uses the default
-  GITHUB_TOKEN with contents:write + pull-requests:write. Validation happens
-  inline in this run, so the PR body links here as the CI evidence (PRs opened
-  by GITHUB_TOKEN do not trigger on:pull_request workflows).
+  GITHUB_TOKEN with contents:write + pull-requests:write. The bump commit is
+  created via the GraphQL `createCommitOnBranch` mutation so it is signed
+  server-side by GitHub and satisfies `required_signatures` rulesets without
+  managing any signing key. Validation happens inline in this run, so the PR
+  body links here as the CI evidence (PRs opened by GITHUB_TOKEN do not
+  trigger on:pull_request workflows).
 
 inputs:
   marketplace-path:
