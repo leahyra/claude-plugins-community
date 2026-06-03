@@ -58,6 +58,7 @@ jobs:
 | `marketplace-path` | `.claude-plugin/marketplace.json` | |
 | `max-bumps` | `20` | cap per run |
 | `allowed-hosts` | `github.com gitlab.com bitbucket.org` | same SSRF allowlist as validate-plugins |
+| `sha-exempt` | `""` | deliberately-unpinned plugin names to skip (else nightly re-pins them); same list as validate-plugins |
 | `claude-cli-version` | `latest` | **pin in your workflow** |
 | `npm-registry` | `""` | optional internal mirror |
 | `pr-branch` | `bump/plugin-shas` | |

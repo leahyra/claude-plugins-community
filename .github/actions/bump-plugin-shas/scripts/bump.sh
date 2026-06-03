@@ -24,6 +24,12 @@ source "$VALIDATE_LIB"
 : "${BASE_BRANCH:?}"
 : "${GH_TOKEN:?}"
 
+# Space-padded for whole-word matching (same convention as validate-plugins).
+# Listed names are deliberately unpinned: without this skip, an empty
+# old_sha never equals upstream HEAD, so the entry looks permanently stale
+# and the nightly run would re-pin it — silently undoing the exemption.
+SHA_EXEMPT=" ${SHA_EXEMPT:-} "
+
 PR_MODE="${PR_MODE:-batch}"
 case "$PR_MODE" in
   batch|per-entry) ;;
@@ -72,6 +78,15 @@ while IFS= read -r entry; do
   checked=$((checked+1))
 
   name="$(jq -r '.name' <<<"$entry")"
+
+  # Deliberately-unpinned entries: nothing to bump. Plain log, not skip() —
+  # this is steady-state policy, not a per-run anomaly worth a ::warning.
+  if [[ "$name" =~ ^[a-z0-9][a-z0-9-]{1,63}$ && "$SHA_EXEMPT" == *" $name "* ]]; then
+    log "$name: unpinned by policy (sha-exempt); not bumping"
+    skipped="$(jq -c --arg n "$name" --arg r "unpinned by policy (sha-exempt)" '. + [{name:$n, reason:$r}]' <<<"$skipped")"
+    continue
+  fi
+
   url="$(jq -r '.source.url // .source.repo // empty' <<<"$entry")"
   old_sha="$(jq -r '.source.sha // empty' <<<"$entry")"
   subdir="$(jq -r '.source.path // ""' <<<"$entry")"

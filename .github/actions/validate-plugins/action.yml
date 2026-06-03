@@ -23,6 +23,15 @@ inputs:
       Space-separated invariant codes treated as WARN instead of ERROR. Tune
       per-repo policy without forking the action.
     default: "I1 I3 I5 I8"
+  sha-exempt:
+    description: >
+      Space-separated plugin names allowed to omit source.sha (invariant I5).
+      Only a MISSING sha is waived for listed names — a present-but-malformed
+      sha still fails, so typos in pinned entries are never let through. Use
+      sparingly: an unpinned source tracks a moving ref, so the code served to
+      users can change without review. Pair with the same list on the
+      bump-plugin-shas action, or the nightly bump will re-pin exempt entries.
+    default: ""
   skip-external:
     description: Skip cloning/validating external plugins (step 30)
     default: "false"
@@ -131,6 +140,7 @@ runs:
         BASE_REF: ${{ inputs.base-ref }}
         FAIL_ON_WARNINGS: ${{ inputs.fail-on-warnings }}
         WARN_INVARIANTS: ${{ inputs.warn-invariants }}
+        SHA_EXEMPT: ${{ inputs.sha-exempt }}
       run: "$ACTION_PATH/scripts/11-validate-invariants.sh"
 
     - name: CLI validate marketplace

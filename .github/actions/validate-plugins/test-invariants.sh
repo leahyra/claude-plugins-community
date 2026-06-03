@@ -16,7 +16,7 @@ failures=0; total=0
 mk() { local f="$TMP/$1.json"; cat > "$f"; printf '%s' "$f"; }
 
 run_invariants() {
-  export VALIDATE_TMP="$TMP/v" MARKETPLACE_PATH="$1" BASE_REF=HEAD WARN_INVARIANTS="" ENTRIES_DIR="${2:-}"
+  export VALIDATE_TMP="$TMP/v" MARKETPLACE_PATH="$1" BASE_REF=HEAD WARN_INVARIANTS="" ENTRIES_DIR="${2:-}" SHA_EXEMPT="${SHA_EXEMPT_FIXTURE:-}"
   rm -rf "$VALIDATE_TMP"; mkdir -p "$VALIDATE_TMP"
   cp "$1" "$VALIDATE_TMP/marketplace.json"
   bash scripts/11-validate-invariants.sh 2>&1 || true
@@ -69,6 +69,37 @@ f=$(mk i5 <<'EOF'
 {"plugins":[{"name":"abc","description":"ten chars ok","source":{"source":"url","url":"https://github.com/x/y"}}]}
 EOF
 ); assert_fires "I5 missing sha" I5 "$f"
+
+# I5 sha-exempt: a listed name may omit sha entirely; a malformed sha still
+# fails even when listed; the match is whole-word (no prefix bleed).
+f=$(mk i5-exempt <<'EOF'
+{"plugins":[{"name":"abc","description":"ten chars ok","source":{"source":"url","url":"https://github.com/x/y"}}]}
+EOF
+)
+SHA_EXEMPT_FIXTURE="abc"
+assert_clean "I5 exempt name may omit sha" "$f"
+
+f=$(mk i5-exempt-malformed <<'EOF'
+{"plugins":[{"name":"abc","description":"ten chars ok","source":{"source":"url","url":"https://github.com/x/y","sha":"deadbeef"}}]}
+EOF
+)
+assert_fires "I5 exempt name, malformed sha still fails" I5 "$f"
+
+f=$(mk i5-exempt-prefix <<'EOF'
+{"plugins":[{"name":"abc-extra","description":"ten chars ok","source":{"source":"url","url":"https://github.com/x/y"}}]}
+EOF
+)
+assert_fires "I5 exemption is whole-word, not prefix" I5 "$f"
+SHA_EXEMPT_FIXTURE=""
+
+# A name with a space must not splice across two adjacent exempt entries.
+f=$(mk i5-exempt-splice <<'EOF'
+{"plugins":[{"name":"foo bar","description":"ten chars ok","source":{"source":"url","url":"https://github.com/x/y"}}]}
+EOF
+)
+SHA_EXEMPT_FIXTURE="foo bar"
+assert_fires "I5 spaced name cannot splice exempt entries" I5 "$f"
+SHA_EXEMPT_FIXTURE=""
 
 # I6/I7: per-file mode invariants — need an entries-dir with a misnamed file
 mkdir -p "$TMP/entries"

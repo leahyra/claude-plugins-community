@@ -6,7 +6,8 @@
 # I2  no duplicate names
 # I3  description 10-2000 chars, no leading/trailing whitespace
 # I4  all source.url are https:// (re-checked here as defense-in-depth)
-# I5  every external source has a 40-char sha
+# I5  every external source has a 40-char sha (names in SHA_EXEMPT may omit
+#     it entirely; a present-but-malformed sha still fails even for them)
 # I6  per-file mode: filename matches .name
 # I7  per-file mode: PR does not edit assembled marketplace.json directly
 # I8  vendored source path exists and contains .claude-plugin/plugin.json
@@ -20,6 +21,9 @@ source "$ACTION_PATH/lib/common.sh"
 : "${MARKETPLACE_PATH:?}"
 MP="$VALIDATE_TMP/marketplace.json"
 WARN_INVARIANTS=" ${WARN_INVARIANTS:-I1 I3 I5 I8} "
+# Space-padded for whole-word matching, same trick as WARN_INVARIANTS —
+# exempting "abc" must not exempt "abc-extra".
+SHA_EXEMPT=" ${SHA_EXEMPT:-} "
 failures=0
 warnings=0
 
@@ -90,7 +94,17 @@ while IFS= read -r entry; do
     fi
   fi
   if [[ ! "$sha" =~ ^[0-9a-f]{40}$ ]]; then
-    flag "I5" "$name: source.sha is missing or not a 40-char hex SHA" "$name"
+    # The name must itself be I11-shaped before consulting the list: in
+    # repos where I11 is a warning, a name containing a space could otherwise
+    # splice across two adjacent exempt entries ("foo bar" vs "foo" + "bar").
+    if [[ -z "$sha" && "$name" =~ ^[a-z0-9][a-z0-9-]{1,63}$ && "$SHA_EXEMPT" == *" $name "* ]]; then
+      # Exemption waives only a MISSING sha. A sha that is present but
+      # malformed is a typo in a pin, never an intentional unpinned source.
+      info "invariant I5: $name has no source.sha (allowed via sha-exempt)"
+      record_result "invariants" "skip" "I5" "$name: unpinned, exempt via sha-exempt"
+    else
+      flag "I5" "$name: source.sha is missing or not a 40-char hex SHA" "$name"
+    fi
   fi
 
   # I9: every string-valued field under .source must be free of shell metacharacters.

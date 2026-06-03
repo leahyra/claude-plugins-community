@@ -20,6 +20,13 @@ inputs:
   allowed-hosts:
     description: Space-separated allowlist of git hosts (same semantics as validate-plugins)
     default: "github.com gitlab.com bitbucket.org"
+  sha-exempt:
+    description: >
+      Space-separated plugin names that intentionally have no source.sha
+      (deliberately unpinned; see the validate-plugins input of the same
+      name). These entries are skipped entirely — without this, an entry
+      with no sha looks permanently stale and gets re-pinned every night.
+    default: ""
   claude-cli-version:
     description: Version of @anthropic-ai/claude-code to install
     default: latest
@@ -107,6 +114,7 @@ runs:
         MARKETPLACE_PATH: ${{ inputs.marketplace-path }}
         MAX_BUMPS: ${{ inputs.max-bumps }}
         ALLOWED_HOSTS: ${{ inputs.allowed-hosts }}
+        SHA_EXEMPT: ${{ inputs.sha-exempt }}
         PR_MODE: ${{ inputs.pr-mode }}
         PR_BRANCH: ${{ inputs.pr-branch }}
         BASE_BRANCH: ${{ inputs.base-branch }}

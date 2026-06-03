@@ -112,6 +112,7 @@ Repos that store one entry per file (e.g. `.claude-plugin/plugins/<name>.json`):
 | `entries-dir` | `""` | set for per-file repos; enables I6/I7 |
 | `base-ref` | PR base / push `before` / `origin/main` | diff base for change detection |
 | `warn-invariants` | `"I1 I3 I5 I8"` | invariant codes treated as WARN instead of ERROR |
+| `sha-exempt` | `""` | plugin names allowed to omit `source.sha` (I5); malformed SHAs still fail; pair with the same list on bump-plugin-shas |
 | `skip-external` | `false` | disable step 30 |
 | `skip-local-folders` | `false` | disable steps 40/41 |
 | `fail-on-warnings` | `false` | treat warnings as failures (steps 11/20/40) |
