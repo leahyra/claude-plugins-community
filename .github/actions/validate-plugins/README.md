@@ -27,7 +27,7 @@ canonical schema. These do not track upstream — they are this org's policy flo
 |---|---|---|
 | **11 invariants** | full marketplace | I1–I9 hardening rules (sort, dups, desc bounds, https-only, SHA-pin required, filename match, no-direct-edit, vendored-path-exists, no shell metacharacters) |
 | **20 cli-marketplace** | full marketplace | `claude plugin validate <marketplace.json>` — the canonical schema check |
-| **30 cli-external** | changed entries (or all, if `validate-all-external`) | clone each external plugin at its pinned SHA, run `claude plugin validate`. Exactly as strict as the CLI — extra keys in `plugin.json` fail. |
+| **30 cli-external** | changed entries (or all, if `validate-all-external`) | clone each external plugin at its pinned SHA. For entries that ship a `plugin.json`, run `claude plugin validate` against it — exactly as strict as the CLI, extra keys fail. For `strict:false` (skills-only) entries with no `plugin.json`, synthesize a minimal manifest (mirrors how the marketplace loads them) and validate that, instead of failing for a missing manifest. |
 | **40 cli-local** | changed folders | `claude plugin validate` on each in-repo plugin folder the PR touched |
 | **41 aux-files** | changed folders | JSON-parse `.mcp.json` / `.lsp.json` / `hooks/hooks.json` (runtime always-probes these; malformed = crash) |
 
@@ -128,7 +128,7 @@ Repos that store one entry per file (e.g. `.claude-plugin/plugins/<name>.json`):
 | Output | |
 |---|---|
 | `changed-entries` | JSON array of entry names |
-| `changed-external` | JSON array of `{name, source}` |
+| `changed-external` | JSON array of `{name, source, strict}` — `strict` is `false` only when explicitly set; absent/null ⇒ treated as strict |
 | `changed-folders` | JSON array of folder paths |
 | `result` | `pass` / `fail` |
 | `report-path` | markdown report path |
@@ -157,6 +157,10 @@ source kinds added by the CLI are hardened automatically.
 - External plugin validation (step 30) clones into an isolated temp directory,
   checks out the exact pinned SHA, and runs only `claude plugin validate`
   (a static manifest check). **No code from the cloned repo is executed.**
+- For a `strict:false` entry with no `plugin.json`, step 30 writes a synthesized
+  minimal manifest into the isolated clone dir (via `jq -n`, a system tool)
+  before validating. Nothing from the cloned repo is read or run to produce it,
+  and the clone dir is discarded after validation.
 - **SSRF guard:** before any clone, the URL host is checked against
   `allowed-hosts`. Bare IP addresses are always rejected.
 - All contributor-controlled values (`url`, `repo`, `sha`, `path`) are

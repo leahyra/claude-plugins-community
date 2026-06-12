@@ -99,7 +99,7 @@ changed_external_json="$(
     '[.plugins[]
       | select(.name as $n | $names | index($n))
       | select(.source | type == "object")
-      | {name, source}]' \
+      | {name, source, strict}]' \
     "$VALIDATE_TMP/marketplace.json"
 )"
 

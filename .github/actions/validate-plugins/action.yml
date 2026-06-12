@@ -59,7 +59,8 @@ inputs:
     description: >
       Run step 30 against EVERY external entry, not just changed ones. Intended
       for nightly drift-detection workflows (catches deleted repos, force-pushed
-      SHAs). Expensive on large marketplaces.
+      SHAs). Expensive on large marketplaces. (strict:false skills-only entries
+      get a synthesized manifest here too, same as the changed-entry path.)
     default: "false"
   claude-cli-version:
     description: >
@@ -86,7 +87,10 @@ outputs:
     description: JSON array of marketplace entry names changed in this PR
     value: ${{ steps.detect.outputs.changed-entries }}
   changed-external:
-    description: JSON array of changed external entries ({name, source})
+    description: >
+      JSON array of changed external entries ({name, source, strict}). `strict`
+      is `false` only when explicitly set on the entry; absent/null is treated
+      as strict (true). Consumers gating on it should not assume a boolean.
     value: ${{ steps.detect.outputs.changed-external }}
   changed-folders:
     description: JSON array of changed in-repo plugin folder paths
