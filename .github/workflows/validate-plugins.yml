@@ -30,3 +30,4 @@ jobs:
         with:
           marketplace-path: .claude-plugin/marketplace.json
           skip-local-folders: "true"
+          scope-errors-to-changed: "true"

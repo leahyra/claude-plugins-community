@@ -32,6 +32,18 @@ inputs:
       users can change without review. Pair with the same list on the
       bump-plugin-shas action, or the nightly bump will re-pin exempt entries.
     default: ""
+  scope-errors-to-changed:
+    description: >
+      When true, a per-entry invariant violation on an entry this PR did NOT
+      change is downgraded from ERROR to WARNING, so a preexisting defect already
+      on the base branch cannot block an unrelated PR (the entry is still
+      surfaced as a warning). Per-entry invariants (I3-I6, I8-I11) downgrade;
+      the entry-name-less, whole-marketplace invariants (I1 alpha-sort, I2
+      duplicate names, I7 direct-edit) always error. Note: if fail-on-warnings
+      is also enabled, the downgraded warnings still fail the run. Default false
+      (opt-in): the action hard-enforces every invariant across the full
+      marketplace unless a repo enables this.
+    default: "false"
   skip-external:
     description: Skip cloning/validating external plugins (step 30)
     default: "false"
@@ -132,7 +144,7 @@ runs:
         ENTRIES_DIR: ${{ inputs.entries-dir }}
       run: "$ACTION_PATH/scripts/00-detect-changes.sh"
 
-    - name: Custom invariants I1-I9
+    - name: Custom invariants I1-I11
       shell: bash
       env:
         MARKETPLACE_PATH: ${{ inputs.marketplace-path }}
@@ -141,6 +153,7 @@ runs:
         FAIL_ON_WARNINGS: ${{ inputs.fail-on-warnings }}
         WARN_INVARIANTS: ${{ inputs.warn-invariants }}
         SHA_EXEMPT: ${{ inputs.sha-exempt }}
+        SCOPE_ERRORS_TO_CHANGED: ${{ inputs.scope-errors-to-changed }}
       run: "$ACTION_PATH/scripts/11-validate-invariants.sh"
 
     - name: CLI validate marketplace

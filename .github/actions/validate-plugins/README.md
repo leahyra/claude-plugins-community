@@ -113,6 +113,7 @@ Repos that store one entry per file (e.g. `.claude-plugin/plugins/<name>.json`):
 | `base-ref` | PR base / push `before` / `origin/main` | diff base for change detection |
 | `warn-invariants` | `"I1 I3 I5 I8"` | invariant codes treated as WARN instead of ERROR |
 | `sha-exempt` | `""` | plugin names allowed to omit `source.sha` (I5); malformed SHAs still fail; pair with the same list on bump-plugin-shas |
+| `scope-errors-to-changed` | `false` | when `true`, a per-entry invariant violation (I3-I6, I8-I11) on an entry the PR did **not** change is downgraded ERROR→WARNING, so a preexisting base-branch defect can't block an unrelated PR; the entry-name-less whole-marketplace invariants (I1/I2/I7) always error. Defeated by `fail-on-warnings`. |
 | `skip-external` | `false` | disable step 30 |
 | `skip-local-folders` | `false` | disable steps 40/41 |
 | `fail-on-warnings` | `false` | treat warnings as failures (steps 11/20/40) |

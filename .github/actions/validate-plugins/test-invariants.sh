@@ -130,6 +130,82 @@ f=$(mk i11 <<'EOF'
 EOF
 ); assert_fires "I11 bad name format" I11 "$f"
 
+# --- Mechanism A: diff-scoping (SCOPE_ERRORS_TO_CHANGED) ---------------------
+# A per-entry violation on an entry NOT in changes.json's .entries downgrades
+# ERROR->WARNING; a changed entry still ERRORs; whole-file invariants (no name)
+# never downgrade. Uses a separate VALIDATE_TMP ($TMP/vs) + a written changes.json.
+echo
+echo "--- diff-scoping (scope-errors-to-changed) ---"
+
+# run_scoped <changed-csv> <file> [scope=true] [writefile=yes] -> invariants stdout
+#  scope:     value for SCOPE_ERRORS_TO_CHANGED ("true"/"false").
+#  writefile: "no" omits changes.json entirely (exercises the absent-file fail-safe).
+# WARN_INVARIANTS=NONE is a sentinel (not "") so the script's
+# ${WARN_INVARIANTS:-I1 I3 I5 I8} default can't fire — that default would make
+# I1/I5 warnings on its own and mask the scoping behavior under test.
+# FAIL_ON_WARNINGS pinned false so an outer env can't turn a downgraded warning
+# back into a failure mid-suite.
+run_scoped() {
+  local changed="$1" file="$2" scope="${3:-true}" writefile="${4:-yes}"
+  export VALIDATE_TMP="$TMP/vs" MARKETPLACE_PATH="$file" BASE_REF=HEAD \
+         WARN_INVARIANTS="NONE" ENTRIES_DIR="" SHA_EXEMPT="" FAIL_ON_WARNINGS="false" \
+         SCOPE_ERRORS_TO_CHANGED="$scope"
+  rm -rf "$VALIDATE_TMP"; mkdir -p "$VALIDATE_TMP"
+  cp "$file" "$VALIDATE_TMP/marketplace.json"
+  if [[ "$writefile" == "yes" ]]; then
+    printf '%s' "$changed" | jq -R -s -c 'split(",")|map(select(length>0))|{entries:.,external:[],folders:[]}' \
+      > "$VALIDATE_TMP/changes.json"
+  fi
+  bash scripts/11-validate-invariants.sh 2>&1 || true
+}
+
+# Annotation patterns are ANCHORED to the GitHub format flag() emits
+# (`::error file=...::invariant <code>:`), so a marketplace tmp-path that happens
+# to contain "invariant" or "::warning" can't produce a false match.
+assert_error() {  # $1 desc $2 code $3 changed-csv $4 file [$5 scope] [$6 writefile]
+  total=$((total+1))
+  out="$(run_scoped "$3" "$4" "${5:-true}" "${6:-yes}")"
+  if grep -qE "^::error file=.*::invariant $2:" <<<"$out"; then echo "  PASS $1 — $2 errors"
+  else echo "  FAIL $1 — expected ::error for $2"; grep -E '::(error|warning)' <<<"$out"|sed 's/^/    /'; failures=$((failures+1)); fi
+}
+
+assert_warn_not_error() {  # $1 desc $2 code $3 changed-csv $4 file
+  total=$((total+1))
+  out="$(run_scoped "$3" "$4")"
+  if grep -qE "^::warning file=.*::invariant $2:" <<<"$out" && ! grep -qE "^::error file=.*::invariant $2:" <<<"$out"; then
+    echo "  PASS $1 — $2 downgraded to warning"
+  else echo "  FAIL $1 — expected ::warning (not ::error) for $2"; grep -E '::(error|warning)' <<<"$out"|sed 's/^/    /'; failures=$((failures+1)); fi
+}
+
+# Two object-source entries (sorted); "bbb" omits sha (I5 violation).
+f=$(mk scope <<'EOF'
+{"plugins":[{"name":"aaa","description":"valid good entry","source":{"source":"url","url":"https://github.com/x/y","sha":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}},{"name":"bbb","description":"valid bad entry","source":{"source":"url","url":"https://github.com/x/z"}}]}
+EOF
+)
+assert_warn_not_error "I5 on UNCHANGED entry (PR changed only aaa) downgrades" I5 "aaa" "$f"
+assert_error          "I5 on CHANGED entry (PR changed bbb) still errors"      I5 "bbb" "$f"
+# Feature OFF: same unchanged entry still ERRORs (regression guard for the default).
+assert_error "I5 with scoping OFF still errors (unchanged entry)"          I5 "aaa" "$f" "false" "yes"
+# Fail-safe: scoping ON but changes.json ABSENT -> behaves as OFF (errors).
+assert_error "I5 scoping ON but no changes.json (fail-safe) errors"        I5 "aaa" "$f" "true"  "no"
+
+# Whole-word matching: a changed entry must not cover a prefix-sharing sibling.
+# "foo-extra" omits sha; PR changed only "foo" -> "foo-extra" must still downgrade.
+f=$(mk scope_prefix <<'EOF'
+{"plugins":[{"name":"foo","description":"ten chars ok","source":{"source":"url","url":"https://github.com/x/y","sha":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}},{"name":"foo-extra","description":"ten chars ok","source":{"source":"url","url":"https://github.com/x/z"}}]}
+EOF
+)
+assert_warn_not_error "I5 whole-word: changed 'foo' does NOT cover 'foo-extra'" I5 "foo" "$f"
+
+# Whole-file invariant (I1 sort, name-less) must NEVER downgrade — neither with an
+# empty changed list nor with the offending entries explicitly in it.
+f=$(mk scope_i1 <<'EOF'
+{"plugins":[{"name":"zzz","description":"ten chars ok","source":"./z"},{"name":"aaa","description":"ten chars ok","source":"./a"}]}
+EOF
+)
+assert_error "I1 (whole-file) errors with NO changed entries"            I1 ""        "$f"
+assert_error "I1 (whole-file) errors with entries IN the changed list"   I1 "zzz,aaa" "$f"
+
 echo
 echo "=== $((total-failures))/$total passed ==="
 [[ "$failures" -eq 0 ]]
