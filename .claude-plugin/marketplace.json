@@ -52,7 +52,7 @@
         "url": "42Crunch-AI/claude-plugins",
         "path": "plugins/api-security-testing",
         "ref": "v1.0.1",
-        "sha": "56273e0e20762d76640838300a7431c4260cad32"
+        "sha": "bc781f96be8ce17a2972e8a9a3ef38b1ca7e8cc4"
       },
       "homepage": "https://docs.42crunch.com"
     },
@@ -62,7 +62,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/pitimon/8-habit-ai-dev.git",
-        "sha": "8fce9c5a5aa87093b968a57d65cfe827e51e1392"
+        "sha": "04bd2941f39eeb78733719a9992cc8184a8546cd"
       },
       "homepage": "https://github.com/pitimon/8-habit-ai-dev"
     },
@@ -266,7 +266,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/adcontextprotocol/adcp-client.git",
-        "sha": "a22d284c4324f8e663c3240f185dcf4124521b72"
+        "sha": "b73b7280740998b7cea0a16acc2e280d11fafd3c"
       },
       "homepage": "https://github.com/adcontextprotocol/adcp-client"
     },
@@ -501,7 +501,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/agentlinksh/agent.git",
-        "sha": "11c0f939d746edf6d57878be08eed74e959d7e4e"
+        "sha": "5b76a8ae745fa0ff54dea50b6a8b95e658bca75c"
       },
       "homepage": "https://agentlink.sh/"
     },
@@ -858,7 +858,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/codeaholicguy/ai-devkit.git",
-        "sha": "bd4028603fd414d885bbf30a2ac2a9cfa104e26c"
+        "sha": "e1df9013ee578a9c0e65cd75c48db72aa6ee2df7"
       },
       "homepage": "https://ai-devkit.com/docs/"
     },
@@ -2754,7 +2754,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/browser-use/browser-harness.git",
-        "sha": "0e679e2c56bdc4add10befaada4674b85882e3a6"
+        "sha": "2cfaa7ea4c77b17b4c2434403865fa4b6d637b29"
       },
       "homepage": "https://browser-use.com"
     },
@@ -3153,7 +3153,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/GarySonyak/cc-native.git",
-        "sha": "a97e2c4a7d60c0287014ae6c80e1d3e627a24d0f"
+        "sha": "68bbeb5b0f6702fa7c491643b517395a2b15c538"
       },
       "homepage": "https://claudecode.sonyak.investments/feature-guide/"
     },
@@ -3377,7 +3377,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/harry-harish/chrome-extension-builder.git",
-        "sha": "de8b4a07f1c7d5c361cbe92f71ba098873703f0a"
+        "sha": "c2922a31373fe72f2d30f2715411eecd65d6d0a6"
       },
       "homepage": "https://github.com/harry-harish/chrome-extension-builder"
     },
@@ -3785,7 +3785,7 @@
         "url": "This-HW/claude-code-kit",
         "path": "plugins/common",
         "ref": "main",
-        "sha": "5cc3e6e38b750b4f0f1b9b87a251337c30533f29"
+        "sha": "5d4f48deb18abbf3cf41e990a6d33799fd9719bb"
       },
       "homepage": "https://github.com/This-HW/claude-code-kit"
     },
@@ -4019,7 +4019,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/liatrio-labs/claude-deep-review.git",
-        "sha": "bbeb92bf54bdd1e237c56b61059cfb88afa5a1fc"
+        "sha": "9c2ca2831b5217be247adc48f487eb6e9758266b"
       },
       "homepage": "https://github.com/liatrio-labs/claude-deep-review"
     },
@@ -5865,7 +5865,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/nessos666/context-bench.git",
-        "sha": "d8c4d23af7b237395f458d1bb5138d0c525fa575"
+        "sha": "4d1a7ab33abf672a2b9214e74dec9483c495c09e"
       },
       "homepage": "https://github.com/nessos666/context-bench"
     },
@@ -5905,7 +5905,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/mksglu/context-mode.git",
-        "sha": "e991879ce4fd7ef118a7cecfbb9c5163b56ae161"
+        "sha": "78d6ebc586098f37d1e1b7131b5dd8311e9fc2dc"
       },
       "homepage": "https://context-mode.mksg.lu/"
     },
@@ -7556,7 +7556,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/dotsecenv/dotsecenv.git",
-        "sha": "f1a6d5486908bc4f0fd0921dc95eceef1c346d35"
+        "sha": "82cc3eb4de95afa4859bf1ba6f1f0ad73c5afaf6"
       },
       "homepage": "https://dotsecenv.com/guides/claude-code/"
     },
@@ -7566,7 +7566,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/mayurpise/draft.git",
-        "sha": "83a1472747eea2925d832f6641beaf46cc478506"
+        "sha": "6395a5cfedc39fefce93cb4ada550531b8c3dc47"
       },
       "homepage": "https://github.com/mayurpise/draft"
     },
@@ -8184,7 +8184,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/RobsonTigre/everyday-causal-skills.git",
-        "sha": "16bbfd9368dced6a8230d83ea034fa45ce8eda09"
+        "sha": "e7141e25c9dfca9bea2b63960cc7a6717bce24d4"
       },
       "homepage": "https://github.com/RobsonTigre/everyday-causal-skills"
     },
@@ -10310,7 +10310,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/heygen-com/hyperframes.git",
-        "sha": "fbc3cdf2fd43379838eaf858c111a119d9a997a3"
+        "sha": "211e0adbe873fa7efe2152a0d352cc7c86ec4e08"
       },
       "homepage": "https://hyperframes.heygen.com"
     },
@@ -10494,7 +10494,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/pbakaus/impeccable.git",
-        "sha": "92d6141cdf61f9943dfc8e2e46870e54e46d8641"
+        "sha": "9c0012d4e18d1df7b72b8f55073d9cd3fd317ddc"
       },
       "homepage": "https://impeccable.style"
     },
@@ -11461,7 +11461,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/zhupanov/larch.git",
-        "sha": "fbacd52dcc0b5c6d9de1563800081150efd68e46"
+        "sha": "28b59becc890f680d4e551392403a0024def9903"
       },
       "homepage": "https://github.com/zhupanov/larch"
     },
@@ -11800,7 +11800,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/agentlinksh/agent.git",
-        "sha": "11c0f939d746edf6d57878be08eed74e959d7e4e"
+        "sha": "5b76a8ae745fa0ff54dea50b6a8b95e658bca75c"
       },
       "homepage": "https://agentlink.sh/"
     },
@@ -11956,7 +11956,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/verivus-oss/llm-cli-gateway.git",
-        "sha": "662bfdca989761e4a50e20222e7ca8e3cace74a2"
+        "sha": "c0bf7a87d7df347d357065e20929b8258ee33872"
       },
       "homepage": "https://github.com/verivus-oss/llm-cli-gateway#readme"
     },
@@ -12361,7 +12361,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/MangroveTechnologies/mangrove-trader-plugin.git",
-        "sha": "d8f371e5ece7b616068341e9fbfb0e64463db4e2"
+        "sha": "2fd218f3ebf20c980f08b4f4ea0103065525e1b7"
       },
       "homepage": "https://mangrovetraders.com"
     },
@@ -12776,7 +12776,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/WorldBrain/memex-claude.git",
-        "sha": "44eb1ecd44c495728d715a7653199f2c2171c46f"
+        "sha": "046a6f56821e2f6280c6172ca7b374bc4ab7b500"
       },
       "homepage": "https://memex.garden"
     },
@@ -13878,7 +13878,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/xiaolai/nlpm-for-claude.git",
-        "sha": "82c34859b3f00058868727635e1c804d979cb47c"
+        "sha": "d88dab5accc6cb4cd22d021c363ec5eaab290712"
       },
       "homepage": "https://nlpm.com"
     },
@@ -13998,7 +13998,7 @@
         "url": "ApurvBazari/claude-plugins",
         "path": "notify",
         "ref": "main",
-        "sha": "7decf3958e533348b875bf3017c217fa6241e134"
+        "sha": "6aa30de910fe1a6f4915a29494d7170108125c9b"
       },
       "homepage": "https://github.com/ApurvBazari/claude-plugins/blob/main/notify/README.md"
     },
@@ -14120,7 +14120,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/Sourabh-Garg-tech/obsidian.git",
-        "sha": "f6e904b19991e8f982d75fb1705d10205346df10"
+        "sha": "8511fb5f796ce709b57cb965c8c9a6480b9bcd58"
       },
       "homepage": "https://github.com/Sourabh-Garg-tech/obsidian/blob/master/README.md"
     },
@@ -14140,7 +14140,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/crypdick/obsidian-knowledge.git",
-        "sha": "edfaea40444b3cfb475a03c9c678506ae66fae1e"
+        "sha": "9f85c5d1ec1a9c8fbad280f72dfedf71d9da4440"
       },
       "homepage": "https://github.com/crypdick/obsidian-knowledge/blob/main/README.md"
     },
@@ -14192,7 +14192,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/nyldn/claude-octopus.git",
-        "sha": "f8a69e2c705cd00e10085dd0895f6210813cbeea"
+        "sha": "1b6affbe317a3f1b9b351b7624a42091b50927a4"
       },
       "homepage": "https://github.com/nyldn/claude-octopus"
     },
@@ -14360,7 +14360,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/fabio-rovai/open-ontologies.git",
-        "sha": "98e2d31b21cf0875bd4bee5832573f0859eca2c0"
+        "sha": "12fa081a5a190a4e41695803c55104f9ddce90b2"
       },
       "homepage": "https://github.com/fabio-rovai/open-ontologies"
     },
@@ -15419,7 +15419,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/product-on-purpose/pm-skills.git",
-        "sha": "f82e5d23bc528f2771608e80479532eaae2324e7"
+        "sha": "d7744fcfbab592cdf5544f37cc5e3744aa90b0f4"
       },
       "homepage": "https://github.com/product-on-purpose/pm-skills"
     },
@@ -17131,7 +17131,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/rdmurugan/sabhaos.git",
-        "sha": "c80bf718814bad42b2406f067e10f6cb4c13a925"
+        "sha": "ca7b888d6061e74eeab17121f7741662737639f5"
       },
       "homepage": "https://github.com/rdmurugan/sabhaos"
     },
@@ -17523,7 +17523,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/AminForou/mcp-gsc.git",
-        "sha": "e60a87d77dae0f5c3057a1ae551f85c7970a5702"
+        "sha": "daab327277e28f8efcc83d9964fb1466a91a1d68"
       },
       "homepage": "https://advancedgsc.com"
     },
@@ -19607,7 +19607,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/gustavo-meilus/superpipelines.git",
-        "sha": "e78310dbab9e52f89e24e2a17a1254934cb3c324"
+        "sha": "4a79c5dbcbba2f1befc7596bfbf8e119f90d2476"
       },
       "homepage": "https://github.com/gustavo-meilus/superpipelines"
     },
@@ -19983,7 +19983,7 @@
         "url": "https://github.com/ajbarea/techne.git",
         "path": "plugins/techne",
         "ref": "main",
-        "sha": "1c3293733a55c72a19c4a1274362ea6d92ec3000"
+        "sha": "28e61a4d7e1a56f2943ad44d26799ef6bb773c8c"
       },
       "homepage": "https://ajbarea.github.io/techne/"
     },
@@ -20302,7 +20302,7 @@
         "url": "robertomarchioro/goldmarktplace",
         "path": "plugins/throwing",
         "ref": "v0.1.0",
-        "sha": "e4292a2acd2cf7aeb1d0fd9aa0c794665b2e8b3b"
+        "sha": "a5955ef827435c8fec45040957c5250ff3122162"
       },
       "homepage": "https://github.com/robertomarchioro/goldmarktplace/tree/main/plugins/throwing"
     },
@@ -20574,7 +20574,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/strvmarv/total-recall.git",
-        "sha": "afba2b46563a17ba8a6139f36d818f71ace9567a"
+        "sha": "4134476b0e0ead8d10fef1fdd8cdfe7bedbd38c7"
       },
       "homepage": "https://github.com/strvmarv/total-recall#readme"
     },
@@ -21441,7 +21441,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/tuo-lei/vibe-replay.git",
-        "sha": "b5e97940f78b8fba7e7d25ebec7c55a4d8e7de46"
+        "sha": "93da97e5664fc1213e09c8440e6f2a2febf484ed"
       },
       "homepage": "https://vibe-replay.com"
     },
@@ -22205,7 +22205,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/wix/skills.git",
-        "sha": "def21835af3e6f0d86bf8c18acb1aaad7fdc9cd8"
+        "sha": "1d441e5f3ffa6085e88df15fe807cb97dd99b10d"
       },
       "homepage": "https://dev.wix.com/docs/wix-cli/guides/development/about-wix-skills"
     },
