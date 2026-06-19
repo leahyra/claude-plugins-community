@@ -136,7 +136,60 @@ runs:
         CLAUDE_CLI_VERSION: ${{ inputs.claude-cli-version }}
       run: |
         set -euo pipefail
-        npm install -g "@anthropic-ai/claude-code@${CLAUDE_CLI_VERSION}"
+        # The claude-code package ships its runtime as a platform-native OPTIONAL
+        # dependency, fetched by a postinstall script. On hosted runners that fetch
+        # intermittently stalls or is skipped (npm --omit=optional, some pnpm
+        # configs), leaving "added 1 package" but no usable `claude` binary
+        # ("native binary not installed"). A bare `npm i -g …@latest &&
+        # claude --version` therefore fails non-deterministically and jams whichever
+        # PR happens to catch it. Make the install self-healing: force the optional
+        # dependency, verify the binary, and on a miss re-run the postinstall — with
+        # bounded retries, a real (not no-op) reinstall each round, and a timeout on
+        # EVERY network step so a stalled fetch fails fast instead of hanging for
+        # tens of minutes.
+        PKG="@anthropic-ai/claude-code@${CLAUDE_CLI_VERSION}"
+        # `|| true` so a non-zero `npm root -g` can't abort the step under `set -e`.
+        pkg_root() { echo "$(npm root -g 2>/dev/null || true)/@anthropic-ai/claude-code"; }
+        clean_state() {
+          # npm no-ops a reinstall when @latest is already on disk (even from a
+          # SIGTERM-killed attempt) — which SKIPS the postinstall that fetches the
+          # native binary. Remove the package dir + clear the cache so retries are
+          # genuine. Guard the path so a bad `npm root -g` can never `rm -rf /…`.
+          local root; root="$(pkg_root)"
+          [[ "$root" == */node_modules/@anthropic-ai/claude-code ]] && rm -rf "$root" 2>/dev/null || true
+          npm cache clean --force >/dev/null 2>&1 || true
+        }
+        install_attempt() {
+          # --include=optional: never let a runner's omit=optional config skip the
+          # native dep. -k 10: SIGKILL backstop if SIGTERM doesn't stop a stalled fetch.
+          timeout -k 10 300 npm install -g --include=optional "$PKG"
+        }
+        heal_postinstall() {
+          # Re-run the package's own postinstall to fetch the native binary — the
+          # remedy the failure message prescribes — ALSO under a timeout, so the heal
+          # path can't reintroduce the unbounded hang this step exists to kill.
+          local root; root="$(pkg_root)"
+          if [[ -f "$root/install.cjs" ]]; then
+            echo "claude binary missing after install; running postinstall: $root/install.cjs"
+            timeout -k 10 300 node "$root/install.cjs" || true
+          fi
+        }
+        ok=""
+        for attempt in 1 2 3; do
+          echo "::group::Install claude CLI (attempt ${attempt}/3)"
+          [[ "$attempt" -gt 1 ]] && clean_state   # make retries real reinstalls
+          install_attempt || echo "npm install attempt ${attempt} failed or timed out"
+          if claude --version 2>/dev/null; then ok=1; echo "::endgroup::"; break; fi
+          heal_postinstall
+          if claude --version 2>/dev/null; then ok=1; echo "::endgroup::"; break; fi
+          echo "::endgroup::"
+          [[ "$attempt" -lt 3 ]] && sleep $((attempt * 10))
+        done
+        if [[ -z "$ok" ]]; then
+          echo "::error::claude CLI did not become usable after 3 attempts (native-binary fetch failing — see logs above)." >&2
+          echo "diag: node=$(node --version 2>/dev/null) npm=$(npm --version 2>/dev/null) omit=$(npm config get omit 2>/dev/null)" >&2
+          exit 1
+        fi
         claude --version
 
     - name: Detect changes
